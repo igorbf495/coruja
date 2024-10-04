@@ -54,9 +54,9 @@ fi
 
 # Executando a requisição usando curl
 if [ "$METHOD" == "GET" ]; then
-    response=$(curl -s -w "%{http_code}" -o /dev/null "$URL")
+    response=$(curl -s -X "$METHOD" -H "Content-Type: application/json" -d "$BODY" "$URL")
 else
-    response=$(curl -s -w "%{http_code}" -o /dev/null -X "$METHOD" -H "Content-Type: application/json" -d "$BODY" "$URL")
+    response=$(curl -s -X "$METHOD" -H "Content-Type: application/json" -d "$BODY" "$URL")
 fi
 
 # Exibindo o resultado
