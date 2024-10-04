@@ -8,13 +8,16 @@ import (
     "net/http"
 )
 
-func makeRequest(method, url, body string) {
+func makeRequest(method, url string, body string) {
     var reqBody *bytes.Buffer
+
+    // Inicializando o corpo da requisição apenas se for necessário
     if body != "" {
         reqBody = bytes.NewBuffer([]byte(body))
-    } else {
-        reqBody = nil
     }
+
+    // Debug: Imprimindo os parâmetros antes de fazer a requisição
+    fmt.Printf("Método: %s, URL: %s, Corpo: %v\n", method, url, body)
 
     req, err := http.NewRequest(method, url, reqBody)
     if err != nil {
@@ -49,6 +52,13 @@ func main() {
     body := flag.String("body", "", "Corpo da requisição (para POST e PUT)")
 
     flag.Parse()
+
+    // Verificação de método válido
+    validMethods := map[string]bool{"GET": true, "POST": true, "PUT": true, "DELETE": true}
+    if _, ok := validMethods[*method]; !ok {
+        fmt.Println("Método inválido. Use GET, POST, PUT ou DELETE.")
+        return
+    }
 
     makeRequest(*method, *url, *body)
 }
